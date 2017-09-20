@@ -1,0 +1,35 @@
+{
+  "name": "nobs-js",
+  "version": "0.0.1",
+  "description": "A set of plain old, No BS utilities to make using WebComponents a breeze and eliminate the need for a framework",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf lib && babel src -d lib",
+    "link": "cp package.json lib && cd lib && npm link"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nbever/nobs-js.git"
+  },
+  "keywords": [
+    "WebComponents",
+    "JavaScript",
+    "Web",
+    "Framework",
+    "ES6"
+  ],
+  "author": "Nate Bever",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nbever/nobs-js/issues"
+  },
+  "homepage": "https://github.com/nbever/nobs-js#readme",
+  "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^1.0.12",
+    "babel-cli": "^6.0.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1"
+  }
+}
