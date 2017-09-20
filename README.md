@@ -8,64 +8,19 @@ To get started just add `nobs-js` as a dependency in your packages.json file and
 
 ### Prerequisites
 
-Unfortunately the WebComponents specification is not yet natively implemented in all browsers, so a polyfill is still required.  Luckily the good folks over at Google with the Polymer Project have a great one [here](https://www.webcomponents.org/polyfills).
+Unfortunately the WebComponents specification is not yet natively implemented in all browsers, so a polyfill is still required.  Luckily the good folks over at Google with the Polymer Project have a great one [here](https://www.webcomponents.org/polyfills).  The bad news is achieving cross-browser compatibility is still tricky.
 
-Follow the instructions there to make it available in your project and be sure to add `@webcomponents/webcomponentsjs` to your pacakges.json file.
+For those of you using webpack, I have included a sample configuration that I have used with success.  Here is the [webpack.config.js](./examples/webpack.config.js) and here is the [ejs template](./examples/index.html.ejs) I've used that dynamically loads the right mix of polyfills.
 
-For those of you using webpack, here is a sample webpack configuration that I have used in the past that gets the whole thing up and running:
+Both of these portions were heavily influenced by [this fine artice](http://robdodson.me/how-to-use-polymer-with-webpack/).
 
-```
-const path = require('path');
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-
-module.exports = {
-  entry: {
-    application: [
-      'babel-polyfill',
-      './src/index.js'
-    ],
-    vendor: [
-      "@webcomponents/webcomponentsjs/custom-elements-es5-adapter",
-      "@webcomponents/webcomponentsjs/webcomponents-loader",
-      "web-component"
-    ]
-  },
-  devtool: 'source-map',
-  devServer: {
-    contentBase: './dist',
-    historyApiFallback: true
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        use: 'babel-loader'
-      }
-    ]
-  },
-  plugins: [
-    new CleanWebpackPlugin(['dist']),
-    new webpack.IgnorePlugin(/vertx/),
-    new HtmlWebpackPlugin({
-      title: 'WebComponents Test'
-    })
-  ],
-  output: {
-    filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "./dist"),
-    publicPath: "/"
-  },
-};
-```
 ## What is this really?
 
 This project is born out of one developers growing irritation of chasing JavaScript frameworks for 10+ years.  When building a web application the question was always: "Which framework are you going to use?".  It started with things like JSF, JSPs, Struts followed by the wave of YUI, Dojo, Backbase etc. followed by GWT, ExtJS, then Angular, Ember, Backbone, Knockout and now React, Vue... the list goes on and on.
 
 Meanwhile, in the background there is a dedicate smart group of folks building this sort of technology directly into the DOM largely marginalizing a lot of these tools and I wondered: "Can you build a complex web app now with nothing but (soon to be) native code?"
 
-The answer is... almost.  
+The answer is... almost.
 
 WebComponents v1 gives you a heck of a lot, but you still end up writing some boilerplate and solving certain problems over and over so this library was born to abstract those pieces.  The pieces are:
 
@@ -89,7 +44,7 @@ The basic recipe is this:
   `MyWidget extends BaseElement`
   This puts you into the lifecycle which is just an augmentation of the "rea" WebComponent lifecycle.  During the constructor it will do template substitutions, create the shadowDOM (in open mode) and attach your template to the shadowDom.  In the connectedCallback stage it will call "addEventListeners" which you may want to overwrite so that you can do just that.  There is a corresponding "removeEventListeners" that is called on disconnectedCallback.
 
-2. Create a string template for your widgets DOM structure.  
+2. Create a string template for your widgets DOM structure.
   In the example below they are inline for convenience, but I often import them.  These templates follow the WebComponents style of:
   ```
   <style>
@@ -250,7 +205,7 @@ This is just the beginning of something I hope will be useful, any contributions
 
 ## Authors
 
-* **Nate Bever* - *Initial work* - [nbever](https://github.com/nbever)
+*Nate Bever* - Initial work - [nbever](https://github.com/nbever)
 
 ## License
 
