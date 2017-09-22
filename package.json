@@ -1,7 +1,7 @@
 {
-  "name": "nobs-js",
+  "name": "single-malt",
   "version": "0.0.1",
-  "description": "A set of plain old, No BS utilities to make using WebComponents a breeze and eliminate the need for a framework",
+  "description": "A set of plain old javascript utilities to make using WebComponents a breeze and eliminate the need for a framework.  Pure, simple and tasty like your favorite single malt!",
   "main": "index.js",
   "scripts": {
     "build": "rm -rf lib && babel src -d lib",

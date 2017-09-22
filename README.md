@@ -1,10 +1,10 @@
-# NoBS.js
+# Single Malt JS
 
-This is a set of utilities to help with WebComponent development for developers that want to use the latest DOM features and don't believe a framework is necessary
+This is a set of utilities to help with WebComponent development for developers that want to use the latest DOM features and don't believe a framework is necessary.  Just like a single malt scotch it's simple, pure and tasty.  This is in it's infancy and suggestions are very welcome.
 
 ## Getting Started
 
-To get started just add `nobs-js` as a dependency in your packages.json file and away you go!
+To get started just add `single-malt` as a dependency in your packages.json file and away you go!
 
 ### Prerequisites
 
@@ -29,9 +29,11 @@ WebComponents v1 gives you a heck of a lot, but you still end up writing some bo
 * Registry
   With ES6 classes you can run into a scope issue where you lose access to the registered elements.  Typically you never need to touch this because the Router is the only thing accessing it and the register currying takes care of the registration process... but it's there and available.
 * registerElement
-  This is a method you wrap your class in such that it gets registered with the customElements registry (WebComponents thing) and it also serves as the method to inject services into your class.  (COMING SOON!!)
+  This is a method you wrap your class in such that it gets registered with the customElements registry (WebComponents thing) and it also serves as the method to inject services into your class.
 * Router
   I probably could have adapted a full featured router for this but in keeping with the spirit of this project, it's a simple router that renders pages associated with routes and injects the wildcard variables.
+* ServiceRegistry
+  The injection system from Angular was very useful for managing an abstraction between resource management, presentation and business logic so this fulfills that niche in a very simple sort of way.
 
 That's it.  In my opinion WebComponents solves almost everything we need, so a little tooling sugar is all that's necessary to build a full application.  Take a look at the code ... there's nothing to it!
 
@@ -40,6 +42,15 @@ That's it.  In my opinion WebComponents solves almost everything we need, so a l
 *Work in progress and not all features are completed as of writing this!*
 
 The basic recipe is this:
+0. Register your services.
+  All of your services need to be registered before any elements are is loaded.  In the example I exploit the difference between `import` and `require` to ensure this happens but there might be other methods - remember - imports are hoisted so beware!
+
+  This is what registration looks like:
+  `ServiceRegistry.register(MyElem, MyElem2)`
+
+  where "MyElem" is the class object.  This will also be the key you can use to signal it to be injected into one of your classes.  
+
+
 1. Extend your class off of BaseElement like so:
   `MyWidget extends BaseElement`
   This puts you into the lifecycle which is just an augmentation of the "rea" WebComponent lifecycle.  During the constructor it will do template substitutions, create the shadowDOM (in open mode) and attach your template to the shadowDom.  In the connectedCallback stage it will call "addEventListeners" which you may want to overwrite so that you can do just that.  There is a corresponding "removeEventListeners" that is called on disconnectedCallback.
@@ -63,8 +74,7 @@ The basic recipe is this:
   export default registerElement('my-service')(MyWidget);
   ```
 
-  This method will extend your class by augmenting the prototype by finding the services listed and adding them as properties of your class.  It will also take your class and register it with the customElements registry by converting the class name to kabob case (a-b-c).
-  *Service injection is not implemented just yet*
+  This method will extend your class by augmenting the prototype by finding the services listed and adding them as properties of your class.  It will also take your class and register it with the customElements registry by converting the class name to kabob case (a-b-c).  Here is where you can also declare what services you'd like to have available to this class by passing the class names as arguments into this function.
 
 Here is a ListBuilder widget that takes text and allows you to add it to a growing list, and to remove items from that list:
 
@@ -201,7 +211,7 @@ When the route is triggered it will use the component key to find the constructo
 
 ## Contributions Welcome
 
-This is just the beginning of something I hope will be useful, any contributions will be considered so feel free to fork this repository and submit ideas.
+This is just the beginning of something I hope will be useful, any contributions will be considered so feel free to fork this repository and submit ideas.  I can't stress enough that there are likely smarter way to accomplish some of these things and I'd love to see this evolve.
 
 ## Authors
 
