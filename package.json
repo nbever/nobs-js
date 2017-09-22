@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf lib && babel src -d lib",
-    "link": "cp package.json lib && cd lib && npm link"
+    "link": "cp package.json lib && cd lib && npm link",
+    "publish": "cp package.json lib && cd lib && npm publish"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nbever/nobs-js.git"
+    "url": "git+https://github.com/nbever/single-malt.git"
   },
   "keywords": [
     "WebComponents",
@@ -21,9 +22,9 @@
   "author": "Nate Bever",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nbever/nobs-js/issues"
+    "url": "https://github.com/nbever/single-malt/issues"
   },
-  "homepage": "https://github.com/nbever/nobs-js#readme",
+  "homepage": "https://github.com/nbever/single-malt#README.md",
   "devDependencies": {
     "babel-cli": "^6.0.0",
     "babel-preset-env": "^1.6.0",
