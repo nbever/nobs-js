@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf lib && babel src -d lib",
     "link": "cp package.json lib && cd lib && npm link",
-    "publish": "cp package.json lib && cd lib && npm publish"
+    "publish": "cp package.json lib && cp *.md lib && cd lib && npm publish"
   },
   "repository": {
     "type": "git",
