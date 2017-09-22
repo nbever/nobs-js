@@ -183,6 +183,14 @@ class Route extends BaseElement {
   }
 }
 
-window.customElements.define('wc-router', Router);
-window.customElements.define('wc-route', Route);
+console.log(window.customElements.get('wc-router'));
+
+if ( isUndefined(window.customElements.get('wc-router'))) {
+  window.customElements.define('wc-router', Router);
+}
+
+if ( isUndefined(window.customElements.get('wc-route'))) {
+  window.customElements.define('wc-route', Route);
+}
+
 export { Router, Route };
