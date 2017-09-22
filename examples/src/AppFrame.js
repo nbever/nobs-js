@@ -30,4 +30,4 @@ class AppFrame extends BaseElement {
   }
 }
 
-export default registerElement('something')(AppFrame);
+export default registerElement()(AppFrame);

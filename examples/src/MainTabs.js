@@ -15,7 +15,7 @@ class MainTabs extends BaseElement {
       <div>
         <tab-bar>
           <a data-url="/overview">Overview</a>
-          <a data-url="/boring">Student</a>
+          <a data-url="/boring">Boring</a>
           <a data-url="/admin">Admin</a>
         </tab-bar>
         <wc-router>

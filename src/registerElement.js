@@ -1,4 +1,6 @@
 import Registry from './Registry';
+import ServiceRegistry from './ServiceRegistry';
+import isUndefined from 'lodash/isUndefined';
 
 const convertToKabob = (str) => {
   // Convert camelCase capitals to kebab-case.
@@ -20,9 +22,17 @@ const convertToKabob = (str) => {
 
 const registerElement = ( ...services ) => {
   return (clazz) => {
-    clazz.prototype.testing = () => {
-      alert( 'cool!' );
-    }
+
+    // inject the services
+    services.forEach(serviceName => {
+      const realService = ServiceRegistry.getService(serviceName);
+
+      if (isUndefined(realService)) {
+        throw new Error(`Service: ${serviceName} was not found.  Was it registered?`);
+      }
+
+      clazz.prototype[serviceName] = realService;
+    });
 
     const elementName = convertToKabob(clazz.name);
     Registry.define(elementName, clazz);
@@ -31,4 +41,5 @@ const registerElement = ( ...services ) => {
   }
 };
 
+export { convertToKabob };
 export default registerElement;

@@ -30,12 +30,7 @@ class Registry {
     }
 
     instance.registryMap[aName] = aConstructor;
-    try {
-      window.customElements.define(aName, aConstructor);
-    }
-    catch( e ){
-      console.log(e);
-    }
+    window.customElements.define(aName, aConstructor);
   }
 }
 
