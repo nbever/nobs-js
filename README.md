@@ -12,7 +12,7 @@ Unfortunately the WebComponents specification is not yet natively implemented in
 
 For those of you using webpack, I have included a sample configuration that I have used with success.  Here is the [webpack.config.js](./examples/webpack.config.js) and here is the [ejs template](./examples/index.html.ejs) I've used that dynamically loads the right mix of polyfills.
 
-Both of these portions were heavily influenced by [this fine artice](http://robdodson.me/how-to-use-polymer-with-webpack/).
+Both of these portions come from [Rob Dodson's fine artice](http://robdodson.me/how-to-use-polymer-with-webpack/).
 
 ## What is this really?
 
