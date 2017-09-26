@@ -1,6 +1,6 @@
 import Registry from './Registry';
 import ServiceRegistry from './ServiceRegistry';
-import isUndefined from 'lodash/isUndefined';
+import { isUndefined } from './utils';
 
 const convertToKabob = (str) => {
   // Convert camelCase capitals to kebab-case.

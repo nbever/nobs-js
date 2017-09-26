@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rm -rf lib && babel src -d lib",
     "link": "cp package.json lib && cd lib && npm link",
-    "publish": "cp package.json lib && cp *.md lib && cd lib && npm publish"
+    "publish": "cp package.json lib && cp *.md lib && cd lib && npm publish",
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -26,8 +27,27 @@
   },
   "homepage": "https://github.com/nbever/single-malt#README.md",
   "devDependencies": {
-    "babel-cli": "^6.0.0",
+    "@webcomponents/webcomponentsjs": "^1.0.10",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
-    "babel-preset-stage-1": "^6.24.1"
+    "babel-preset-stage-1": "^6.24.1",
+    "chai": "^4.1.2",
+    "karma": "^1.7.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "karma-requirejs": "^1.1.0",
+    "karma-rollup-plugin": "^0.2.4",
+    "mocha": "^3.5.3",
+    "requirejs": "^2.3.5",
+    "rollup": "0.36.0",
+    "rollup-plugin-babel": "2.6.1",
+    "sinon": "^3.3.0",
+    "web-component": "^1.0.23"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
   }
 }

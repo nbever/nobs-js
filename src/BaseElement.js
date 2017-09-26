@@ -1,19 +1,19 @@
-import isUndefined from 'lodash/isUndefined';
-import isNull from 'lodash/isNull';
+import { isUndefined, isNull } from './utils';
 
 class BaseElement extends HTMLElement {
 
   constructor() {
     super();
-    this.attachShadow({mode: 'open'});
-    const filteredTemplate = this.doSubstitution();
-    this.shadowRoot.innerHTML = filteredTemplate;
   }
 
   connectedCallback() {
     if (this.isConnected === false) {
       return;
     }
+
+    this.attachShadow({mode: 'open'});
+    const filteredTemplate = this.doSubstitution();
+    this.shadowRoot.innerHTML = filteredTemplate;
 
     this.addEventListeners();
   }

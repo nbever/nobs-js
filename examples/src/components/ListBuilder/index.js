@@ -2,7 +2,7 @@
 import { registerElement, BaseElement } from '../../../../lib';
 
 // Correct way below
-// import { BaseElement, registerElement } from 'nobs-js';
+// import { BaseElement, registerElement } from 'single-malt';
 
 import ListItem from './ListItem';
 import isUndefined from 'lodash/isUndefined';

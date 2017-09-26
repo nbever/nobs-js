@@ -6,7 +6,7 @@ import OverviewPage from './pages/OverviewPage';
 import BoringPage from './pages/BoringPage';
 
 // Correct way to import below
-// import { Router, BaseElement, registerElement } from 'nobs-js';
+// import { Router, BaseElement, registerElement } from 'single-malt';
 
 class MainTabs extends BaseElement {
 

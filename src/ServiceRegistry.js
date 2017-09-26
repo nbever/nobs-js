@@ -1,4 +1,4 @@
-import isUndefined from 'lodash/isUndefined';
+import { isUndefined } from './utils';
 import { convertToKabob } from './registerElement';
 
 let instance = undefined;
