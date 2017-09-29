@@ -74,8 +74,8 @@ class Router extends BaseElement {
 
     if (!isUndefined(oldElem) && !isNull(oldElem)) {
       this.shadowRoot.removeChild(oldElem);
-      const oldRoute = this.findMatchingRoute(oldPath);
-      
+      const oldRoute = this.findMatchingRoute(oldPath).route;
+
       if (oldRoute.persist === true) {
         this.persistenceMap[oldPath] = oldElem;
       }
@@ -97,7 +97,7 @@ class Router extends BaseElement {
     const oldPath = this.setUrl($event);
 
     const path = window.location.pathname;
-    const route = this.findMatchingRoute(path);
+    const route = this.findMatchingRoute(path).route;
 
     if (isUndefined(route)) {
       return;
@@ -121,23 +121,28 @@ class Router extends BaseElement {
 
   findMatchingRoute(path) {
     const realTokens = path.split('/');
+    let tokenReplacements = {};
 
     const route = this.routes.find( route => {
-      const tokens = route.getAttribute('path').split('/');
+      const tokenz = route.getAttribute('path').split('/');
 
-      const match = this.doTokensMatch(tokens, realTokens);
+      const { match, tokens } = this.doTokensMatch(tokenz, realTokens);
+      tokenReplacements = tokens;
 
       return match;
     });
 
-    return route;
+    return { route, tokens: tokenReplacements };
   }
 
   doTokensMatch(tokens, realTokens) {
+    const tokenReplacements = {};
+
     const match = tokens.every( (token, index) => {
       const realToken = realTokens[index];
 
       if (token.startsWith(':')) {
+        tokenReplacements[token.substring(1)] = realToken;
         return true;
       }
 
@@ -148,7 +153,7 @@ class Router extends BaseElement {
       return true;
     });
 
-    return match;
+    return { match, tokens: tokenReplacements };
   }
 }
 
@@ -156,10 +161,6 @@ class Route extends BaseElement {
 
   connectedCallback() {
     super.connectedCallback();
-  }
-
-  whenConnected() {
-
   }
 
   get template() {

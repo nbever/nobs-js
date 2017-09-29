@@ -32,6 +32,15 @@ class Registry {
     instance.registryMap[aName] = aConstructor;
     window.customElements.define(aName, aConstructor);
   }
+
+  static undefine(aName) {
+
+    if (isUndefined(Registry.get(aName))) {
+      return;
+    }
+
+    delete instance.registryMap[aName];
+  }
 }
 
 new Registry();

@@ -4,9 +4,16 @@ import { expect } from 'chai';
 
 describe('Router tests', () => {
 
-  // window.customElements.define('wc-router', Router);
+  const buildRouteMock = (path) => {
+    return {
+      getAttribute: (predicate) => {
+        return path;
+      }
+    }
+  };
 
   it('should be able to build child routes', () => {
+
     const router = new Router();
     sinon.stub(router, 'childNodes').get(() => {
       return [
@@ -22,6 +29,7 @@ describe('Router tests', () => {
   });
 
   it('should set the URL correctly', () => {
+
     const sandbox = sinon.createSandbox();
     const replaceState = sandbox.stub(window.history, 'replaceState');
     const pushState = sandbox.stub(window.history, 'pushState');
@@ -60,5 +68,72 @@ describe('Router tests', () => {
     expect(pushState.args[0][2]).to.equal('/s/are/awesome/');
 
     sandbox.restore();
+  });
+
+  it('should match an explicit path', () => {
+
+    const routes = [
+      buildRouteMock('/this/is/bad'),
+      buildRouteMock('/this/is/good'),
+      buildRouteMock('/this/may/be/good'),
+    ];
+
+    const router = new Router();
+    sinon.stub(router, 'routes').get(() => routes);
+
+    const { route } = router.findMatchingRoute('/this/is/good');
+    expect(route).to.equal(routes[1]);
+    expect(route).not.to.equal(routes[0]);
+  });
+
+  it('should stop after the first match', () => {
+
+    const routes = [
+      buildRouteMock('/this/is/bad'),
+      buildRouteMock('/this/is/good'),
+      buildRouteMock('/this/is/good'),
+    ];
+
+    const router = new Router();
+    sinon.stub(router, 'routes').get(() => routes);
+
+    const { route } = router.findMatchingRoute('/this/is/good');
+    expect(route).to.equal(routes[1]);
+    expect(route).not.to.equal(routes[2]);
+  });
+
+  it('should match a path with tokens in it', () => {
+
+    const routes = [
+      buildRouteMock('/this/is/bad'),
+      buildRouteMock('/this/:is/:good'),
+      buildRouteMock('/this/is/good'),
+    ];
+
+    const router = new Router();
+    sinon.stub(router, 'routes').get(() => routes);
+
+    const { route } = router.findMatchingRoute('/this/is/good');
+    expect(route).to.equal(routes[1]);
+    expect(route).not.to.equal(routes[2]);
+  });
+
+  it('should match a path and return the tokens', () => {
+
+    const routes = [
+      buildRouteMock('/this/is/bad'),
+      buildRouteMock('/this/:is/:dinosaur'),
+      buildRouteMock('/this/is/good'),
+    ];
+
+    const router = new Router();
+    sinon.stub(router, 'routes').get(() => routes);
+
+    const { route, tokens } = router.findMatchingRoute('/this/is/good');
+    expect(route).to.equal(routes[1]);
+    expect(route).not.to.equal(routes[2]);
+
+    expect(tokens.is).to.equal('is');
+    expect(tokens.dinosaur).to.equal('good');
   });
 });

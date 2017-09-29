@@ -31,6 +31,12 @@ class ServiceRegistry {
       instance.serviceRegistry[clazz.name] = new clazz();
     });
   }
+
+  static unregister(...serviceNames) {
+    serviceNames.forEach(service => {
+      delete instance.serviceRegistry[serviceName];
+    });
+  }
 }
 
 new ServiceRegistry();
