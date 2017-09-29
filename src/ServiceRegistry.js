@@ -26,7 +26,7 @@ class ServiceRegistry {
   }
 
   static register(...classConstructors) {
-    console.log('here!');
+
     classConstructors.forEach(clazz => {
       instance.serviceRegistry[clazz.name] = new clazz();
     });

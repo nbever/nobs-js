@@ -1,12 +1,15 @@
 import BaseElement from '../BaseElement';
-import isUndefined from 'lodash/isUndefined';
-import isNull from 'lodash/isNull';
+import { isUndefined, isNull } from '../utils';
 import Registry from '../Registry';
 
 class Router extends BaseElement {
 
   constructor() {
     super();
+    this.buildRoutes();
+  }
+
+  buildRoutes() {
     this._routes = [];
 
     for (let i = 0; i < this.childNodes.length; i++ ){
@@ -45,12 +48,16 @@ class Router extends BaseElement {
     document.removeEventListener('urlchanged', this.drawRoute);
   }
 
+  getCurrentLocation() {
+    return window.location.pathname;
+  }
+
   setUrl($event) {
     if (isUndefined($event)) {
       return;
     }
 
-    const oldPath = window.location.pathname;
+    const oldPath = this.getCurrentLocation();
 
     if ($event.detail.replace === true) {
       window.history.replaceState(null, '', $event.detail.url);
@@ -68,6 +75,7 @@ class Router extends BaseElement {
     if (!isUndefined(oldElem) && !isNull(oldElem)) {
       this.shadowRoot.removeChild(oldElem);
       const oldRoute = this.findMatchingRoute(oldPath);
+      
       if (oldRoute.persist === true) {
         this.persistenceMap[oldPath] = oldElem;
       }

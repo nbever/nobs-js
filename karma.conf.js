@@ -11,11 +11,12 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js',
       'test/**/*.spec.js'
     ],
 
@@ -36,7 +37,8 @@ module.exports = function(config) {
         babel() // ES2015 compiler by the same author as Rollup
       ],
       // will help to prevent conflicts between different tests entries
-      format: 'iife'
+      format: 'iife',
+      sourceMap: 'inline'
     },
 
 
