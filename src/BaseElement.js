@@ -1,10 +1,21 @@
-import isUndefined from 'lodash/isUndefined';
-import isNull from 'lodash/isNull';
+import { isUndefined, isNull } from './utils';
 
 class BaseElement extends HTMLElement {
 
   constructor() {
     super();
+
+    // if new-ed directly we will not attach the DOM stuff
+    if (Object.getPrototypeOf(this) !== BaseElement.prototype) {
+      this.doAttach();
+    }
+    else {
+      console.warn('Calling the BaseElement constructor directly will not attach a shadow DOM automatically.');
+      console.warn('When you are ready to use this, make sure to call <this>.doAttach().');
+    }
+  }
+
+  doAttach() {
     this.attachShadow({mode: 'open'});
     const filteredTemplate = this.doSubstitution();
     this.shadowRoot.innerHTML = filteredTemplate;
@@ -59,16 +70,34 @@ class BaseElement extends HTMLElement {
   }
 
   addClass = (element, className) => {
-    const clazzes = element.className.split(' ');
+    if (isUndefined(element)) {
+      return;
+    }
+
+    let originalClasses = element.className;
+
+    if (isUndefined(originalClasses)) {
+      originalClasses = '';
+    }
+    else if (!originalClasses.endsWith(' ')) {
+      originalClasses = `${originalClasses} `;
+    }
+
+    const clazzes = isUndefined(element.className) ? [] : element.className.split(' ');
 
     if ( !isUndefined(clazzes.find(c => c == className))) {
       return;
     }
 
-    element.className = element.className + ` ${className}`;
+    element.className = originalClasses + `${className}`;
   }
 
   removeClass = (element, className) => {
+
+    if (isUndefined(element) || isUndefined(element.className)) {
+      return;
+    }
+
     const clazzes = element.className.trim().split(' ');
     const newClasses = clazzes.filter(c => c !== className);
     const classString = newClasses.join(' ');

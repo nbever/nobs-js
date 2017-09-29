@@ -4,7 +4,7 @@ import template from './template';
 import { registerElement, BaseElement } from '../../../../lib';
 
 // correct way below
-// import { BaseElement, registerElement } from 'nobs-js';
+// import { BaseElement, registerElement } from 'single-malt';
 
 class BoringPage extends BaseElement {
   get template() {

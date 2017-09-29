@@ -4,7 +4,7 @@ import ListBuilder from './components/ListBuilder';
 import { registerElement, BaseElement } from '../../lib';
 
 // Real way to import
-// import { BaseElement, registerElement } from 'nobs-js';
+// import { BaseElement, registerElement } from 'single-malt';
 import MainTabs from './MainTabs';
 
 class AppFrame extends BaseElement {

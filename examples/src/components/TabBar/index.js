@@ -1,6 +1,8 @@
-// import BaseElement from '../../utils/BaseElement';
-// import registerElement from '../../utils/registerElement';
-import { BaseElement, registerElement } from 'nobs-js';
+// this is because its local - correct way below
+import { registerElement, BaseElement } from '../../../../lib';
+
+// Correct way below
+// import { BaseElement, registerElement } from 'singel-malt';
 import template from './template';
 import isUndefined from 'lodash/isUndefined';
 

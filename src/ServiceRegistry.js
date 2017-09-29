@@ -1,4 +1,4 @@
-import isUndefined from 'lodash/isUndefined';
+import { isUndefined } from './utils';
 import { convertToKabob } from './registerElement';
 
 let instance = undefined;
@@ -26,9 +26,15 @@ class ServiceRegistry {
   }
 
   static register(...classConstructors) {
-    console.log('here!');
+
     classConstructors.forEach(clazz => {
       instance.serviceRegistry[clazz.name] = new clazz();
+    });
+  }
+
+  static unregister(...serviceNames) {
+    serviceNames.forEach(service => {
+      delete instance.serviceRegistry[serviceName];
     });
   }
 }

@@ -1,12 +1,15 @@
 import BaseElement from '../BaseElement';
-import isUndefined from 'lodash/isUndefined';
-import isNull from 'lodash/isNull';
+import { isUndefined, isNull } from '../utils';
 import Registry from '../Registry';
 
 class Router extends BaseElement {
 
   constructor() {
     super();
+    this.buildRoutes();
+  }
+
+  buildRoutes() {
     this._routes = [];
 
     for (let i = 0; i < this.childNodes.length; i++ ){
@@ -45,12 +48,16 @@ class Router extends BaseElement {
     document.removeEventListener('urlchanged', this.drawRoute);
   }
 
+  getCurrentLocation() {
+    return window.location.pathname;
+  }
+
   setUrl($event) {
     if (isUndefined($event)) {
       return;
     }
 
-    const oldPath = window.location.pathname;
+    const oldPath = this.getCurrentLocation();
 
     if ($event.detail.replace === true) {
       window.history.replaceState(null, '', $event.detail.url);
@@ -67,7 +74,8 @@ class Router extends BaseElement {
 
     if (!isUndefined(oldElem) && !isNull(oldElem)) {
       this.shadowRoot.removeChild(oldElem);
-      const oldRoute = this.findMatchingRoute(oldPath);
+      const oldRoute = this.findMatchingRoute(oldPath).route;
+
       if (oldRoute.persist === true) {
         this.persistenceMap[oldPath] = oldElem;
       }
@@ -89,7 +97,7 @@ class Router extends BaseElement {
     const oldPath = this.setUrl($event);
 
     const path = window.location.pathname;
-    const route = this.findMatchingRoute(path);
+    const route = this.findMatchingRoute(path).route;
 
     if (isUndefined(route)) {
       return;
@@ -113,23 +121,28 @@ class Router extends BaseElement {
 
   findMatchingRoute(path) {
     const realTokens = path.split('/');
+    let tokenReplacements = {};
 
     const route = this.routes.find( route => {
-      const tokens = route.getAttribute('path').split('/');
+      const tokenz = route.getAttribute('path').split('/');
 
-      const match = this.doTokensMatch(tokens, realTokens);
+      const { match, tokens } = this.doTokensMatch(tokenz, realTokens);
+      tokenReplacements = tokens;
 
       return match;
     });
 
-    return route;
+    return { route, tokens: tokenReplacements };
   }
 
   doTokensMatch(tokens, realTokens) {
+    const tokenReplacements = {};
+
     const match = tokens.every( (token, index) => {
       const realToken = realTokens[index];
 
       if (token.startsWith(':')) {
+        tokenReplacements[token.substring(1)] = realToken;
         return true;
       }
 
@@ -140,7 +153,7 @@ class Router extends BaseElement {
       return true;
     });
 
-    return match;
+    return { match, tokens: tokenReplacements };
   }
 }
 
@@ -148,10 +161,6 @@ class Route extends BaseElement {
 
   connectedCallback() {
     super.connectedCallback();
-  }
-
-  whenConnected() {
-
   }
 
   get template() {

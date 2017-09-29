@@ -1,4 +1,4 @@
-import isUndefined from 'lodash/isUndefined';
+import { isUndefined } from './utils';
 
 let instance = undefined;
 
@@ -31,6 +31,15 @@ class Registry {
 
     instance.registryMap[aName] = aConstructor;
     window.customElements.define(aName, aConstructor);
+  }
+
+  static undefine(aName) {
+
+    if (isUndefined(Registry.get(aName))) {
+      return;
+    }
+
+    delete instance.registryMap[aName];
   }
 }
 
