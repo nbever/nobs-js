@@ -1,9 +1,12 @@
-import { isUndefined, isNull } from './utils';
+import { isUndefined, isNull, isNil } from './utils';
+import { convertToKabob } from './registerElement';
 
 class BaseElement extends HTMLElement {
 
   constructor() {
     super();
+
+    this.setDefaults();
 
     // if new-ed directly we will not attach the DOM stuff
     if (Object.getPrototypeOf(this) !== BaseElement.prototype) {
@@ -37,10 +40,22 @@ class BaseElement extends HTMLElement {
     throw new Error('Not implemented!');
   }
 
+  setDefaults() {
+
+  }
+
   addEventListeners() {
   }
 
   removeEventListeners() {
+  }
+
+  find(predicate) {
+    return this.shadowRoot.querySelector(predicate);
+  }
+
+  findAll(predicate) {
+    return this.shadowRoot.querySelectorAll(predicate);
   }
 
   setAttribute(key, value) {
@@ -52,15 +67,19 @@ class BaseElement extends HTMLElement {
     let template = this.template;
     const replacements = template.match(/[^{{\}]+(?=}})/g);
 
-    if (isUndefined(replacements) || isNull(replacements)) {
+    if (isNil(replacements)) {
       return template;
     }
 
     replacements.forEach(prop => {
-      let newVal = this.getAttribute(prop);
+      const kabobProp = convertToKabob(prop);
+      let newVal = this.getAttribute(kabobProp);
 
-      if (isUndefined(newVal)) {
-        newVal = this[prop];
+      if (isNil(newVal)) {
+        newVal = this[prop.trim()];
+      }
+      else {
+        this[prop.trim()] = newVal;
       }
 
       template = template.replace(`{{${prop}}}`, newVal);
@@ -70,13 +89,13 @@ class BaseElement extends HTMLElement {
   }
 
   addClass = (element, className) => {
-    if (isUndefined(element)) {
+    if (isNil(element)) {
       return;
     }
 
     let originalClasses = element.className;
 
-    if (isUndefined(originalClasses)) {
+    if (isNil(originalClasses)) {
       originalClasses = '';
     }
     else if (!originalClasses.endsWith(' ')) {
@@ -85,7 +104,7 @@ class BaseElement extends HTMLElement {
 
     const clazzes = isUndefined(element.className) ? [] : element.className.split(' ');
 
-    if ( !isUndefined(clazzes.find(c => c == className))) {
+    if ( !isNil(clazzes.find(c => c == className))) {
       return;
     }
 
@@ -94,7 +113,7 @@ class BaseElement extends HTMLElement {
 
   removeClass = (element, className) => {
 
-    if (isUndefined(element) || isUndefined(element.className)) {
+    if (isNil(element) || isNil(element.className)) {
       return;
     }
 
